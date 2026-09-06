@@ -1,0 +1,15 @@
+# Ambientes virtuais
+venv/
+env/
+.env
+
+# Cache do ChromaDB e LangChain
+chroma_db_streamlit/
+
+# Dados pessoais e memória do bot
+historico_usuario.json
+manual_natacao.txt
+
+# Arquivos do Python
+__pycache__/
+*.pyc
