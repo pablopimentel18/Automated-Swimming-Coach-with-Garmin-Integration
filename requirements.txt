@@ -5,4 +5,4 @@ langchain-chroma==0.1.0
 langchain-huggingface==0.0.2
 langchain-text-splitters==0.0.1
 requests==2.31.0
-sentence-transformers==2.5.1
+sentence-transformers>=2.6.0
