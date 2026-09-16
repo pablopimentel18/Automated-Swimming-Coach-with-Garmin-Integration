@@ -18,7 +18,7 @@ st.set_page_config(page_title="Técnico Virtual", page_icon="🏊‍♂️")
 st.title("🏊‍♂️ Técnico Virtual de Natação")
 
 # Coloque sua chave aqui
-CHAVE_API = "CHAVE_API" 
+CHAVE_API = "AIzaSyAI0jkZZMYt25hReI5k6C2Q-wUdoQJSLX0" 
 genai.configure(api_key=CHAVE_API)
 os.environ["GOOGLE_API_KEY"] = CHAVE_API # Necessário para o LangChain
 
@@ -45,8 +45,16 @@ def configurar_base_conhecimento():
     Regras do Técnico de Natação:
     - O treino A1 foca em resistência aeróbica básica, nado contínuo e leve.
     - O nado com palmares aumenta a força de tração, mas deve ser limitado a 20% do volume total para evitar lesões no ombro.
-    - Para treinos de velocidade pura, use tiros curtos de 25m a 50m com descanso longo (1 a 2 minutos).
+    - Para treinos de velocidade pura, use tiros curtos de 15m a 25m com descanso longo (1 a 2 minutos).
     - Equipamentos como nadadeiras ajudam a corrigir a posição do quadril na água e fortalecer as pernas.
+    - Ter séries de nado submerso (ondulações) é extremamente para ganho de velocidade
+    - Exercícios como Palmateios aumentam a sensibilidade na água e melhoram a técnica de braçada.
+    - Fazer exercícios de respiração bilateral ajuda a equilibrar a técnica e reduzir o risco de lesões.
+    - Fazer exercícios em apneia auxiliam na condição pulmonar.
+    - Aquecimento Inicial deve possuir 200m variando posições como palmateio e braçada submersa e nado livre.
+    - Após aquecimento, trabalho de pernada focando em técnica é essencial para ativação.
+    - Após trabalho de perna vem os educativos para refinar a técnica.
+    - Após educativos vem a parte principal do treino, que pode variar entre resistência, velocidade e potência ou técnica.
     """
     with open("manual_natacao.txt", "w", encoding="utf-8") as f:
         f.write(conteudo_base)
@@ -68,7 +76,7 @@ banco_vetorial = configurar_base_conhecimento()
 
 # Inicializa o modelo LLM
 modelo_llm = genai.GenerativeModel(
-    model_name="gemini-3.5-flash-lite",
+    model_name="gemini-3.5-flash",
     system_instruction="""
         Você é um técnico de natação de elite. Seja motivador e use o contexto da base de dados.
         
@@ -166,7 +174,13 @@ if pergunta_usuario:
 
 
     # 4. Prepara a lista para o Gemini
-    mensagens_para_api = st.session_state.historico[:-1]
+    MAX_MENSAGENS = 10
+    historico_janela = st.session_state.historico[:-1][-MAX_MENSAGENS:]  
+    if len(historico_janela) > 0 and historico_janela[0]["role"] == "model":
+        historico_janela = historico_janela[1:]  # Remove a primeira mensagem se for do modelo
+
+    
+    mensagens_para_api = list(historico_janela)  # Copia o histórico recente
     mensagens_para_api.append({"role": "user", "parts": [prompt_aumentado]})
     
     # 5. Mostra o "Digitando..." e faz a chamada
@@ -346,6 +360,14 @@ with st.sidebar:
     cookie_garmin = st.text_input("Valor do 'Cookie' (inteiro)", type="password")
     csrf_garmin = st.text_input("Valor do 'Connect-Csrf-Token'", type="password")
     st.caption("Volte no F12 > Request Headers e copie os valores desses dois campos.")
+
+    st.divider()
+
+    st.header("⚙️ Configurações do Chat")
+    if st.button("🗑️ Limpar histórico"):
+        st.session_state.historico = []
+        salvar_memoria([])
+        st.rerun()
 
 # Na parte onde você exibe a resposta do LLM, você faz o seguinte:
 if len(st.session_state.historico) > 0:
