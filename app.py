@@ -18,7 +18,7 @@ st.set_page_config(page_title="Técnico Virtual", page_icon="🏊‍♂️")
 st.title("🏊‍♂️ Técnico Virtual de Natação")
 
 # Coloque sua chave aqui
-CHAVE_API = "AIzaSyAI0jkZZMYt25hReI5k6C2Q-wUdoQJSLX0" 
+CHAVE_API = "Sua chave api" 
 genai.configure(api_key=CHAVE_API)
 os.environ["GOOGLE_API_KEY"] = CHAVE_API # Necessário para o LangChain
 
@@ -76,7 +76,7 @@ banco_vetorial = configurar_base_conhecimento()
 
 # Inicializa o modelo LLM
 modelo_llm = genai.GenerativeModel(
-    model_name="gemini-3.5-flash",
+    model_name="gemini-3.5-flash-lite",
     system_instruction="""
         Você é um técnico de natação de elite. Seja motivador e use o contexto da base de dados.
         
