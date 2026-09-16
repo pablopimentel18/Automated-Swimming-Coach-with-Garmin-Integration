@@ -1,6 +1,6 @@
 # 🏊‍♂️ Técnico Virtual de Natação (Garmin Connect Sync)
 
-Um agente de Inteligência Artificial construído com **Python, LangChain, ChromaDB e Gemini**. Este sistema atua como um técnico virtual que gera treinos de natação personalizados com base em manuais de fisiologia do esporte e os **sincroniza nativamente com o seu relógio Garmin**.
+Um agente de Inteligência Artificial construído com **Python, LangChain, ChromaDB e Gemini**. Este sistema atua como um técnico virtual que gera treinos de natação personalizados com base em manuais de fisiologia do esporte e os **sincroniza nativamente com o seu relógio Garmin**. De tal forma que um usuário faz uma requisição, o sistema faz uma busca em um banco de dados vetorial e envia os cruzamentos dessa busca a um LLM que vai estruturar o treino no formato desejado. Após isso, o script vai injetar o treino na plataforma Garmin Connect e este estará disponível para uso.
 
 Devido aos bloqueios de segurança recentes da Garmin (Cloudflare WAF / TLS Fingerprinting), este projeto utiliza engenharia reversa e injeção direta de sessão HTTP, clonando a assinatura de um navegador real para realizar o upload nativo dos treinos.
 
